@@ -84,15 +84,20 @@ public class Usuario implements Serializable{
     	boolean result = false;
 	   	 Conexao conexao = new Conexao();
 	   	 conexao.conecta();
-	   	 String sql = "SELECT log_usuario, log_senha WHERE log_usuario like '"+usuario+" and log_senha like '"+senha+"'";
+	   	 String sql = "SELECT log_usuario, log_senha from login WHERE log_usuario like '"+usuario+"' and log_senha like '"+senha+"'";
 	   	 try {
 					
 	   		 conexao.resultset = conexao.statement.executeQuery(sql);
+	   		 
+	   		 if(conexao.resultset.next()){
+	   			 result = true;
+	   		 }
 	   		 
 		} catch (SQLException e) {
 			System.out.println("Erro ao gravars: "+e);
 			this.situacao = "Usuario "+usuario+ " Não foi cadastrado";
 		}
+		return result;
   	 
    }
 }
