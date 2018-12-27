@@ -84,10 +84,13 @@ public class Usuario implements Serializable{
     	boolean result = false;
 	   	 Conexao conexao = new Conexao();
 	   	 conexao.conecta();
-	   	 String sql = "SELECT log_usuario, log_senha from login WHERE log_usuario like '"+usuario+"' and log_senha like '"+senha+"'";
+	   	 String sql = "SELECT log_usuario, log_senha from login WHERE log_usuario = ? and log_senha = ? ";
 	   	 try {
-					
-	   		 conexao.resultset = conexao.statement.executeQuery(sql);
+	   		PreparedStatement ps = conexao.connection.prepareStatement(sql);
+			ps.setString(1, usuario);
+			ps.setString(2, senha);
+			
+	   		 conexao.resultset = ps.executeQuery();
 	   		 
 	   		 if(conexao.resultset.next()){
 	   			 result = true;
